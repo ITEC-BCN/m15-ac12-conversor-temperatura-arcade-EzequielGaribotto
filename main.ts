@@ -1,10 +1,14 @@
+let celsius_fahrenheit_number = 0
+let celsius_fahrenheit_selection = "C"
+let celsius_fahrenheit_name = "Celsius"
+let operation_result = 0
 function menu(): number {
     
     
     
     celsius_fahrenheit_selection = game.askForString("Escull la teva unitat Cº (C) o Fahrenheit (F)", 1)
     celsius_fahrenheit_name = getName(celsius_fahrenheit_selection.toUpperCase())
-    celsius_fahrenheit_number = game.askForNumber("Escriu el numero de graus " + celsius_fahrenheit_name, 3)
+    celsius_fahrenheit_number = game.askForNumber("Escriu el numero de graus " + celsius_fahrenheit_name + "=" + conversor(celsius_fahrenheit_selection.toUpperCase(), celsius_fahrenheit_number, false), 3)
     conversor(celsius_fahrenheit_selection.toUpperCase(), celsius_fahrenheit_number)
     return celsius_fahrenheit_number
 }
@@ -23,38 +27,41 @@ function getName(celsius_fahrenheit_selection: string): string {
         menu()
     }
     
-    //  Tornar al menu quan s'escull una opció incorrecta
     return name
 }
 
-function conversor(opcio: string, num: number) {
-    let operation_result: number;
+function conversor(opcio: string, num: number, ui: boolean = true): number {
+    let operation_result = -1
     if (opcio == "C") {
         operation_result = from_celsius_to_fahrenheit(num)
-        game.showLongText(num + ` graus Celsius equivalen a:
-` + Math.roundWithPrecision(operation_result, 2) + " graus Fahrenheit", DialogLayout.Top)
+        if (ui == true) {
+            game.showLongText(num + ` graus Celsius equivalen a:
+` + operation_result + " graus Fahrenheit", DialogLayout.Top)
+        }
+        
     } else if (opcio == "F") {
         operation_result = from_fahrenheit_to_celsius(num)
-        game.showLongText(num + ` graus Fahrenheit equivalen a:
-` + Math.roundWithPrecision(operation_result, 2) + " graus Celsius", DialogLayout.Top)
+        if (ui == true) {
+            game.showLongText(num + ` graus Fahrenheit equivalen a:
+` + operation_result + " graus Celsius", DialogLayout.Top)
+        }
+        
     } else {
         game.showLongText("Unexpected error", DialogLayout.Bottom)
     }
     
-    menu()
+    return operation_result
 }
 
-//  Tornar al menu quan s'ha fet la conversió o hi ha hagut un error
 function from_celsius_to_fahrenheit(num: number): number {
-    return parseInt(num * 9 / 5 + 32)
+    let result = num * 9 / 5 + 32
+    return Math.trunc(result * 100) / 100
 }
 
 function from_fahrenheit_to_celsius(num: number): number {
-    return Math.trunc((num - 32) * 5 / 9)
+    let result = (num - 32) * 5 / 9
+    return Math.trunc(result * 100) / 100
 }
 
-let celsius_fahrenheit_number = 0
-let celsius_fahrenheit_selection = "C"
-let celsius_fahrenheit_name = "Celsius"
 //  MAIN DE LA APP
 menu()
