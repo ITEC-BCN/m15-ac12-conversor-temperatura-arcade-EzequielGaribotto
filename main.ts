@@ -6,9 +6,10 @@ function menu(): number {
     
     
     
+    
     celsius_fahrenheit_selection = game.askForString("Escull la teva unitat Cº (C) o Fahrenheit (F)", 1)
     celsius_fahrenheit_name = getName(celsius_fahrenheit_selection.toUpperCase())
-    celsius_fahrenheit_number = game.askForNumber("Escriu el numero de graus " + celsius_fahrenheit_name + "=" + conversor(celsius_fahrenheit_selection.toUpperCase(), celsius_fahrenheit_number, false), 3)
+    celsius_fahrenheit_number = game.askForNumber("Escriu el numero de graus " + celsius_fahrenheit_name + "=" + operation_result, 3)
     conversor(celsius_fahrenheit_selection.toUpperCase(), celsius_fahrenheit_number)
     return celsius_fahrenheit_number
 }
@@ -30,6 +31,9 @@ function getName(celsius_fahrenheit_selection: string): string {
     return name
 }
 
+controller.A.onEvent(ControllerButtonEvent.Pressed, function on_a_pressed() {
+    let operation_result = conversor(celsius_fahrenheit_selection.toUpperCase(), celsius_fahrenheit_number, false)
+})
 function conversor(opcio: string, num: number, ui: boolean = true): number {
     let operation_result = -1
     if (opcio == "C") {
@@ -50,6 +54,7 @@ function conversor(opcio: string, num: number, ui: boolean = true): number {
         game.showLongText("Unexpected error", DialogLayout.Bottom)
     }
     
+    game.reset()
     return operation_result
 }
 
